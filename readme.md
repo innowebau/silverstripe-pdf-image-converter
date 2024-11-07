@@ -34,10 +34,10 @@ To display a thumbnail of a PDF file in a template you can convertthe PDF to an 
 You can use the `Quality` method to set a specific image quality for different formats:
 
 ```
-	<picture>
-		<source type="image/webp" srcset="$PDFDocument.Convert('webp').Quality(80).Pad(100,150).URL">
-		<img src="$PDFDocument.Convert('jpg').Pad(100,150).URL" height="150" width="100" alt="">
-	</picture>
+<picture>
+	<source type="image/webp" srcset="$PDFDocument.Convert('webp').Quality(80).Pad(100,150).URL">
+	<img src="$PDFDocument.Convert('jpg').Pad(100,150).URL" height="150" width="100" alt="">
+</picture>
 ```
 
 ## License
