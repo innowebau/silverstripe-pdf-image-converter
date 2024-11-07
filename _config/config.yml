@@ -1,0 +1,7 @@
+---
+Name: pdf-image-converter
+---
+
+SilverStripe\Assets\Conversion\FileConverterManager:
+  converters:
+    - Innoweb\PdfToImageConverter\Conversion\PdfToImageConverter

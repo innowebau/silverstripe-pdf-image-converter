@@ -1,0 +1,20 @@
+{
+	"name": "innoweb/silverstripe-pdf-image-converter",
+	"description": "Converts the first page of a PDF file to an image",
+	"type": "silverstripe-vendormodule",
+	"license": "BSD-3-Clause",
+	"keywords": ["silverstripe", "pdf", "convert", "image"],
+	"homepage": "http://github.com/innowebau/silverstripe-pdf-image-converter",
+	"authors": [{
+		"name": "Florian Thoma",
+		"homepage": "https://www.innoweb.com.au"
+	}],
+	"require": {
+		"silverstripe/assets": "^2.3",
+    },
+	"autoload": {
+		"psr-4": {
+			"Innoweb\\PdfToImageConverter\\": "src/"
+		}
+	}
+}
