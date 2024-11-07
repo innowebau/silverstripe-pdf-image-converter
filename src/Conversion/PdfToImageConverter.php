@@ -21,7 +21,7 @@ class PdfToImageConverter implements FileConverter
         if (strtolower($fromExtension) !== 'pdf') {
             $supported = false;
         }
-        if (!in_array(strtolower($toExtension), ['jpg', 'png', 'gif', 'webp', 'avif'])) {
+        if (!in_array(strtolower($toExtension), ['jpg', 'png', 'gif', 'webp'])) {
             $supported = false;
         }
         if (!in_array(strtoupper($toExtension), Imagick::queryFormats())) {

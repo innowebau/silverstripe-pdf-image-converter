@@ -12,6 +12,7 @@ It uses the high level conversion API introduced in Silverstripe 5.3, see the [i
 ## Requirements
 
 * Silverstripe Assets 2.3 (Silverstripe 5.3)
+* ext-imagick
 
 ## Installation
 

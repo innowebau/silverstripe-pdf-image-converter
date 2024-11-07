@@ -10,8 +10,9 @@
 		"homepage": "https://www.innoweb.com.au"
 	}],
 	"require": {
-		"silverstripe/assets": "^2.3"
-    },
+		"silverstripe/assets": "^2.3",
+		"ext-imagick": "*"
+	},
 	"autoload": {
 		"psr-4": {
 			"Innoweb\\PdfToImageConverter\\": "src/"
