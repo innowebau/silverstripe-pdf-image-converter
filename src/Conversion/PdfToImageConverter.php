@@ -44,12 +44,10 @@ class PdfToImageConverter implements FileConverter
         }
 
         // Handle conversion to image
-        return $from->manipulateExtension(
+        $result = $from->manipulateExtension(
             $toExtension,
             function (AssetStore $store, string $filename, string $hash, string $variant) use ($toExtension, $from) {
-
-                $tuple = null;
-                $backend = null;
+                $im = $temp = $tempPath = null;
                 try {
                     $tempPath = TEMP_PATH . DIRECTORY_SEPARATOR . md5(microtime()) . '.' . strtolower($toExtension);
                     $temp = fopen($tempPath, 'w+b');
@@ -68,8 +66,9 @@ class PdfToImageConverter implements FileConverter
 
                     $config = ['conflict' => AssetStore::CONFLICT_USE_EXISTING];
                     $tuple = $backend->writeToStore($store, $filename, $hash, $variant, $config);
+                    return [$tuple, $backend];
                 } catch (Exception $e) {
-                    throw new FileConverterException('Failed to convert: ' . $e->getMessage(), $e->getCode(), $e);
+                    throw new FileConverterException('Failed to convert: ' . $e->getMessage() . ' (' . $from->getFilename() . ' to ' . $toExtension . ')', $e->getCode(), $e);
                 } finally {
                     if ($im) {
                         $im->clear();
@@ -78,12 +77,16 @@ class PdfToImageConverter implements FileConverter
                     if ($temp) {
                         fclose($temp);
                     }
-                    if (file_exists($tempPath)) {
+                    if ($tempPath && file_exists($tempPath)) {
                         unlink($tempPath);
                     }
                 }
-                return [$tuple, $backend];
             }
         );
+
+        if ($result === null) {
+            throw new FileConverterException('File conversion resulted in null. Check whether original file actually exists: ' . $from->getFilename() . ' to ' . $toExtension);
+        }
+        return $result;
     }
 }
