@@ -24,11 +24,10 @@ class PdfToImageConverter implements FileConverter
         if (!in_array(strtolower($toExtension), ['jpg', 'png', 'gif', 'webp'])) {
             $supported = false;
         }
-        if (!in_array(strtoupper($toExtension), Imagick::queryFormats())) {
+        if (!class_exists('Imagick') || !extension_loaded('imagick')) {
             $supported = false;
         }
-
-        if (!class_exists('Imagick') || !extension_loaded('imagick')) {
+        if (!in_array(strtoupper($toExtension), Imagick::queryFormats())) {
             $supported = false;
         }
         return $supported;
