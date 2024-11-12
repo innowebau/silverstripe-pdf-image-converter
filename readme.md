@@ -1,7 +1,7 @@
 # Silverstripe PDF to image converter
 
-[![Version](http://img.shields.io/packagist/v/innoweb/silverstripe-fail2ban.svg?style=flat-square)](https://packagist.org/packages/innoweb/silverstripe-fail2ban)
-[![License](http://img.shields.io/packagist/l/innoweb/silverstripe-fail2ban.svg?style=flat-square)](license.md)
+[![Version](http://img.shields.io/packagist/v/innoweb/silverstripe-pdf-image-converter.svg?style=flat-square)](https://packagist.org/packages/innoweb/silverstripe-pdf-image-converter)
+[![License](http://img.shields.io/packagist/l/innoweb/silverstripe-pdf-image-converter.svg?style=flat-square)](license.md)
 
 ## Overview
 
