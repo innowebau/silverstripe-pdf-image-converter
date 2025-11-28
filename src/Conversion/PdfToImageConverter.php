@@ -46,22 +46,26 @@ class PdfToImageConverter implements FileConverter
         $result = $from->manipulateExtension(
             $toExtension,
             function (AssetStore $store, string $filename, string $hash, string $variant) use ($toExtension, $from) {
-                $im = $temp = $tempPath = null;
+                $im = $tempTargetHandle = $tempTargetPath = null;
                 try {
-                    $tempPath = TEMP_PATH . DIRECTORY_SEPARATOR . md5(microtime()) . '.' . strtolower($toExtension);
-                    $temp = fopen($tempPath, 'w+b');
-                    $orig = Path::normalise(ASSETS_PATH . DIRECTORY_SEPARATOR . $from->getFilename());
+                    $tempTargetPath = TEMP_PATH . DIRECTORY_SEPARATOR . md5(microtime()) . '.' . strtolower($toExtension);
 
-                    $im = new Imagick($orig . "[0]"); // 0-first page, 1-second page
+                    $tempOrigPath = TEMP_PATH . DIRECTORY_SEPARATOR . md5(microtime()) . '.' . strtolower($from->getExtension());
+                    $tempOrigHandle = fopen($tempOrigPath, 'w+b');
+                    fwrite($tempOrigHandle, $from->getString());
+                    fflush($tempOrigHandle);
+                    fclose($tempOrigHandle);
+
+                    $im = new Imagick($tempOrigPath . "[0]"); // 0-first page, 1-second page
                     $im->setImageBackgroundColor('white');
                     $im->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE); // remove transparency
                     $im->transformImageColorspace(Imagick::COLORSPACE_SRGB);
                     $im->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
                     $im->setImageFormat(strtolower($toExtension));
-                    $im->writeImage($tempPath);
+                    $im->writeImage($tempTargetPath);
 
                     $backend = Injector::inst()->create(Image_Backend::class);
-                    $backend->loadFrom($tempPath);
+                    $backend->loadFrom($tempTargetPath);
 
                     $config = ['conflict' => AssetStore::CONFLICT_USE_EXISTING];
                     $tuple = $backend->writeToStore($store, $filename, $hash, $variant, $config);
@@ -73,11 +77,11 @@ class PdfToImageConverter implements FileConverter
                         $im->clear();
                         $im->destroy();
                     }
-                    if ($temp) {
-                        fclose($temp);
+                    if ($tempTargetPath && file_exists($tempTargetPath)) {
+                        unlink($tempTargetPath);
                     }
-                    if ($tempPath && file_exists($tempPath)) {
-                        unlink($tempPath);
+                    if ($tempOrigPath && file_exists($tempOrigPath)) {
+                        unlink($tempOrigPath);
                     }
                 }
             }
